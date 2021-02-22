@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>pagingexercise361</title>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/lodash.min.js"></script>
+
+<script type="text/javascript">
+var app = {
+        items : [],
+        nextpage : 0,
+        prevpage : 0
+};
+
+function updateList() {
+    $("#my-list").html("");
+    app.items.forEach(function (e) {
+        $("#my-list").append("<li>" + e + "</li>");
+    });
+}
+
+function getListItems(currpage) {
+    $.ajax({
+        url : 'services/items?page=' + currpage,
+        dataType : 'json',
+        success : function(r) {
+            app.items = r.list;
+            app.nextpage = r.next;
+            app.prevpage = r.prev;
+
+            updateList();
+        }
+    });
+}
+
+function sendListItem() {
+    var s = $("#texttosend").val();
+    
+    $.post("todo", { texttosend: s}, function() {
+        getListItems(1);
+    });
+}
+
+$(document).ready(function () { 
+    getListItems(1);
+    
+    $("#send-item").on('click', function () {
+        sendListItem();
+    });
+
+    $("#prev-button").on('click', function () {
+        if(app.prevpage > 0) {
+            getListItems(app.prevpage);
+        }
+    });
+
+    $("#next-button").on('click', function () {
+        getListItems(app.nextpage);
+    });
+});
+</script>
+</head>
+<body>
+<h2>Paging Application</h2>
+
+
+<ul id="my-list"></ul>
+
+
+<br>
+<button id="prev-button">Previous</button>
+<button id="next-button">Next</button>
+</body>
+</html>

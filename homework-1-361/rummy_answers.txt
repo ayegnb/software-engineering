@@ -1,0 +1,3 @@
+The differences between domain model and uml diagrams is in different level of details included. Domain model is an abstraction over software program, thus it does not contain any implementation details such as list of methods inside classes or any other related data. UML diagram is more detailed in comparison to domain model diagram.
+
+In the Rummy Problem I have used the State design pattern. It is applicable in this the given task because the behaviour of the program completely depends on the current state (in this case - step). The file called StepsStates.java is an abstract class extended by all states(steps).
